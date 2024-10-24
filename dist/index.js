@@ -14,37 +14,15 @@ const PORT = process.env.PORT || 3005;
 const allowedOrigins = ['http://localhost:3005', 'https://spacenews-sigma.vercel.app'];
 // Middleware to parse JSON request body
 app.use(express_1.default.json());
-// Set up CORS options
+// CORS options to allow all origins, headers, and methods
 const corsOptions = {
-    origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps, or curl requests)
-        if (!origin)
-            return callback(null, true);
-        // Allow only specific origins
-        if (allowedOrigins.includes(origin)) {
-            callback(null, true);
-        }
-        else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: '*', // Allow all origins
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow all methods
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Origin', 'Accept'], // Allow these headers
     optionsSuccessStatus: 200, // For legacy browser support
 };
-// Use the CORS middleware with the options
-// app.use(cors(corsOptions));
-// Allow all origins
-app.use((0, cors_1.default)({
-    origin: true, // This allows all origins
-    optionsSuccessStatus: 200, // For legacy browser support
-}));
-// Middleware to enforce custom header validation
-app.use((req, res, next) => {
-    const customHeader = req.headers['x-requested-with'];
-    if (!customHeader || customHeader !== 'XMLHttpRequest') {
-        return res.status(403).json({ message: 'Access denied. Invalid request header.' });
-    }
-    next();
-});
+// Use CORS middleware with updated options
+app.use((0, cors_1.default)(corsOptions));
 app.get('/', async (req, res) => {
     try {
         const result = await index_1.default.query('SELECT NOW()'); // Example query

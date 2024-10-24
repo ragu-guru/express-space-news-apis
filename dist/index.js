@@ -31,7 +31,12 @@ const corsOptions = {
     optionsSuccessStatus: 200, // For legacy browser support
 };
 // Use the CORS middleware with the options
-app.use((0, cors_1.default)(corsOptions));
+// app.use(cors(corsOptions));
+// Allow all origins
+app.use((0, cors_1.default)({
+    origin: true, // This allows all origins
+    optionsSuccessStatus: 200, // For legacy browser support
+}));
 // Middleware to enforce custom header validation
 app.use((req, res, next) => {
     const customHeader = req.headers['x-requested-with'];

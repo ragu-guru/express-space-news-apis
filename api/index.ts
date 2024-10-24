@@ -31,7 +31,12 @@ const corsOptions = {
 };
 
 // Use the CORS middleware with the options
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+// Allow all origins
+app.use(cors({
+    origin: true, // This allows all origins
+    optionsSuccessStatus: 200, // For legacy browser support
+}));
 
 // Middleware to enforce custom header validation
 app.use((req: Request, res: Response, next) => {

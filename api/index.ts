@@ -4,7 +4,7 @@ import commentsRouter from './routes/comments';
 import metricsRouter from './routes/metrics';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 
 // Middleware to parse JSON request body
 app.use(express.json());

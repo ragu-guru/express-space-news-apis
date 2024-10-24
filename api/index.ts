@@ -33,6 +33,17 @@ const corsOptions = {
 // Use the CORS middleware with the options
 app.use(cors(corsOptions));
 
+// Middleware to enforce custom header validation
+app.use((req: Request, res: Response, next) => {
+    const customHeader = req.headers['x-requested-with'];
+
+    if (!customHeader || customHeader !== 'XMLHttpRequest') {
+        return res.status(403).json({ message: 'Access denied. Invalid request header.' });
+    }
+
+    next();
+});
+
 app.get('/', async (req: Request, res: Response) => {
     try {
         const result = await pool.query('SELECT NOW()'); // Example query
